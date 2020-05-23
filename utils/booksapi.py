@@ -30,14 +30,11 @@ class GBooks():
         for k,v in kwargs.items():
             if k in self.api_mapping.keys():
                 query += '{}:{}+'.format(self.api_mapping[k], v)
-        print(query)
 
         session = requests.Session()
         session.params = {}
         session.params['key'] = self.GBOOKS_API_KEY
-        session.params['q'] = query
-        print(session.params)
-        return session
-        
-        # response = session.get(self.url)
-        # return response.json()
+        # session.params['q'] = query
+
+        response = session.get(self.url + query)
+        return response.json()
