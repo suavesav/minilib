@@ -1,0 +1,9 @@
+.gitignore
+*.pyc
+
+__pycache__
+__pycache__/*
+*.egg-info
+*.egg-info/*
+
+db.sqlite3
