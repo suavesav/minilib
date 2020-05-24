@@ -1,12 +1,13 @@
 import os
 import requests
 
+from urllib.parse import quote_plus
+
 
 class APIKeyMissingError(Exception):
     pass
 
 class GBooks():
-
     def __init__(self):
         self.GBOOKS_API_KEY = os.environ.get('GBOOKS_API_KEY', None)
         if self.GBOOKS_API_KEY is None:
@@ -23,18 +24,29 @@ class GBooks():
             'title': 'intitle',
             'isbn': 'isbn',
         }
+        self.KEYWORDS = 'keywords'
+
+    def _make_query(self, **kwargs):
+        # account for keywords
+        query = '?q='
+        if self.KEYWORDS in kwargs.keys():
+            query += quote_plus(kwargs[self.KEYWORDS])
+
+        for k,v in kwargs.items():
+            if k in self.api_mapping.keys():
+                query += '+{}:{}'.format(
+                    self.api_mapping[k],
+                    quote_plus(v)
+                )
+        return query
 
     def get_book(self, endpoint='volumes', **kwargs):
         self.url = self.url_base + endpoint
-        query = '?q='
-        for k,v in kwargs.items():
-            if k in self.api_mapping.keys():
-                query += '{}:{}+'.format(self.api_mapping[k], v)
+        query = self._make_query(**kwargs)
 
-        session = requests.Session()
-        session.params = {}
-        session.params['key'] = self.GBOOKS_API_KEY
-        # session.params['q'] = query
+        params = {}
+        params['key'] = self.GBOOKS_API_KEY
+        params['q'] = query
 
-        response = session.get(self.url + query)
+        response = requests.get(self.url, params=params)
         return response.json()
