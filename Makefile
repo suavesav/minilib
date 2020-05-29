@@ -7,6 +7,9 @@ migrations:
 runserver:
 	@poetry run python manage.py runserver
 
+oakshell:
+	poetry run python manage.py shell
+
 shell:
 	@poetry run ptipython --vi
 

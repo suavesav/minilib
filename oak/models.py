@@ -14,12 +14,22 @@ class Author(BaseModel):
     first_name = models.CharField(max_length=256)
     last_name = models.CharField(max_length=256)
 
+    @property
+    def full_name(self):
+        return '{} {}'.format(self.first_name, self.last_name)
+
+    def __str__(self):
+        return self.full_name
+
 
 class Book(BaseModel):
     gapi_id = models.CharField(max_length=12, default=None, null=True, db_index=True, unique=True)
     title = models.CharField(max_length=1024)
     author = models.ManyToManyField(Author, related_name='books')
     cover = models.URLField(max_length=2048)
+
+    def __str__(self):
+        return self.title
 
 
 class Bookshelf(BaseModel):
