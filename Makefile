@@ -1,7 +1,7 @@
 migrate:
 	poetry run python manage.py migrate
 
-makemigrations:
+migrations:
 	poetry run python manage.py makemigrations
 
 runserver:
@@ -9,3 +9,6 @@ runserver:
 
 shell:
 	@poetry run ptipython --vi
+
+sqlite:
+	sqlite3 db.sqlite3
