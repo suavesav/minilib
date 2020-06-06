@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
+    'rest_framework',
     'oak.apps.OakConfig',
     'django.contrib.admin',
     'django.contrib.auth',

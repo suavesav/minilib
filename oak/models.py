@@ -23,6 +23,7 @@ class Author(BaseModel):
 
 
 class Book(BaseModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     gapi_id = models.CharField(max_length=12, default=None, null=True, db_index=True, unique=True)
     title = models.CharField(max_length=1024)
     author = models.ManyToManyField(Author, related_name='books')
@@ -35,4 +36,4 @@ class Book(BaseModel):
 class Bookshelf(BaseModel):
     # User-Book Mapping
     user = models.OneToOneField(User, db_index=True, on_delete=models.CASCADE)
-    books = models.ManyToManyField(Book, default=None, null=True, related_name='bookshelves')
+    books = models.ManyToManyField(Book, default=None, related_name='bookshelves')
